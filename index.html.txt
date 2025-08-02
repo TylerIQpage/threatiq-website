@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThreatIQ - Advanced Cybersecurity for SMBs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #e0e0e0;
+            background: #0a0a0a;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav:hover {
+            background: rgba(15, 15, 15, 0.95);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #00ff88;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+
+        .logo::before {
+            content: "🎯";
+            font-size: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #00ff88;
+            transform: translateY(-2px);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00ff88, #00ccff);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(20, 20, 30, 0.9) 100%);
+            padding: 8rem 0 4rem;
+            text-align: center;
+            color: #e0e0e0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(0,255,136,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #00ff88, #00ccff, #ff0080);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            color: #000;
+            padding: 1.2rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.3);
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 255, 136, 0.5);
+        }
+
+        /* Services Section */
+        .services {
+            padding: 5rem 0;
+            background: #111;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            color: #e0e0e0;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .service-card {
+            background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #00ff88, #00ccff);
+            transition: left 0.5s ease;
+        }
+
+        .service-card:hover::before {
+            left: 0;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: #00ff88;
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.2);
+        }
+
+        .service-card.active {
+            border-color: #00ff88;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+        }
+
+        .service-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .service-card h3 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #00ff88;
+        }
+
+        .service-card p {
+            color: #b0b0b0;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .service-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            margin-top: 1rem;
+        }
+
+        .service-details.active {
+            max-height: 500px;
+        }
+
+        .service-details ul {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .service-details li {
+            padding: 0.5rem 0;
+            color: #d0d0d0;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .service-details li::before {
+            content: "▶";
+            position: absolute;
+            left: 0;
+            color: #00ff88;
+        }
+
+        /* Team Section */
+        .team {
+            padding: 5rem 0;
+            background: #0a0a0a;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .team-card {
+            background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .team-card:hover {
+            transform: translateY(-5px);
+            border-color: #00ff88;
+            box-shadow: 0 15px 30px rgba(0, 255, 136, 0.2);
+        }
+
+        .team-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .team-card h3 {
+            color: #00ff88;
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .team-card .role {
+            color: #00ccff;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .team-card p {
+            color: #b0b0b0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* FAQ Section */
+        .faq {
+            padding: 5rem 0;
+            background: #111;
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            color: #00ff88;
+        }
+
+        .faq-arrow {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+            color: #00ff88;
+        }
+
+        .faq-item.active .faq-arrow {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .faq-answer.active {
+            max-height: 300px;
+        }
+
+        .faq-answer p {
+            padding: 1.5rem;
+            color: #b0b0b0;
+            line-height: 1.6;
+        }
+
+        /* About Section */
+        .about {
+            padding: 5rem 0;
+            background: #0a0a0a;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .about p {
+            font-size: 1.2rem;
+            color: #b0b0b0;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 5rem 0;
+            background: #111;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #00ff88;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 10px;
+            font-size: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            color: #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #00ff88;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #666;
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            color: #000;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            background: #000;
+            color: #666;
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+
+            .services-grid, .team-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Hide sections initially for smooth reveal */
+        .services, .team, .faq, .about, .contact {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .services.visible, .team.visible, .faq.visible, .about.visible, .contact.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <div class="nav-container">
+                <a href="#home" class="logo">ThreatIQ</a>
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#team">Team</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>ThreatIQ</h1>
+                <p>Intelligence-driven cybersecurity solutions for the modern business landscape</p>
+                <a href="#contact" class="cta-button">Secure Your Business</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="services">
+        <div class="container">
+            <h2 class="section-title">Our Services</h2>
+            <div class="services-grid">
+                <div class="service-card" data-service="cybersecurity">
+                    <span class="service-icon">🔐</span>
+                    <h3>Cybersecurity Consulting</h3>
+                    <p>Comprehensive security assessments and strategic planning to protect your business from evolving threats.</p>
+                    <div class="service-details">
+                        <ul>
+                            <li>Vulnerability assessments and penetration testing</li>
+                            <li>Security architecture design and implementation</li>
+                            <li>Incident response planning and execution</li>
+                            <li>Security awareness training programs</li>
+                            <li>24/7 threat monitoring and response</li>
+                            <li>Compliance gap analysis and remediation</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="service-card" data-service="insurance">
+                    <span class="service-icon">🛡️</span>
+                    <h3>Cyber Insurance Consulting</h3>
+                    <p>Expert guidance through the complex cyber insurance landscape with comprehensive risk assessment.</p>
+                    <div class="service-details">
+                        <ul>
+                            <li>Policy evaluation and comparison analysis</li>
+                            <li>Risk assessment for optimal coverage</li>
+                            <li>Claims preparation and support</li>
+                            <li>Premium optimization strategies</li>
+                            <li>Breach response coordination with insurers</li>
+                            <li>Annual policy review and updates</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="service-card" data-service="saas">
+                    <span class="service-icon">☁️</span>
+                    <h3>SaaS Brokering</h3>
+                    <p>Curated software solutions that enhance security while optimizing costs and reducing complexity.</p>
+                    <div class="service-details">
+                        <ul>
+                            <li>Security-first SaaS vendor evaluation</li>
+                            <li>Contract negotiation and cost optimization</li>
+                            <li>Integration and deployment planning</li>
+                            <li>Ongoing vendor management and reviews</li>
+                            <li>License optimization and compliance</li>
+                            <li>Security configuration and monitoring</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="service-card" data-service="grc">
+                    <span class="service-icon">📊</span>
+                    <h3>GRC & Risk Assessment</h3>
+                    <p>NIST CSF and ISO27001 compliance consulting with comprehensive governance frameworks.</p>
+                    <div class="service-details">
+                        <ul>
+                            <li>NIST Cybersecurity Framework implementation</li>
+                            <li>ISO27001 certification preparation</li>
+                            <li>Risk assessment and management programs</li>
+                            <li>Policy development and documentation</li>
+                            <li>Audit preparation and support</li>
+                            <li>Continuous compliance monitoring</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="service-card" data-service="ai">
+                    <span class="service-icon">🤖</span>
+                    <h3>AI Automation Consulting</h3>
+                    <p>Leverage AI-powered security automation to enhance your cybersecurity posture and operational efficiency.</p>
+                    <div class="service-details">
+                        <ul>
+                            <li>AI-driven threat detection and response</li>
+                            <li>Automated compliance reporting</li>
+                            <li>Intelligent security orchestration</li>
+                            <li>Machine learning-based anomaly detection</li>
+                            <li>Automated incident triage and response</li>
+                            <li>Predictive risk analytics and forecasting</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="team" class="team">
+        <div class="container">
+            <h2 class="section-title">Meet the Team</h2>
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-photo">👨‍💼</div>
+                    <h3>Alex Rodriguez</h3>
+                    <div class="role">Chief Executive Officer</div>
+                    <p>15+ years in cybersecurity leadership with extensive experience in enterprise security architecture and risk management. Former CISO at Fortune 500 companies.</p>
+                </div>
+                <div class="team-card">
+                    <div class="team-photo">👩‍💻</div>
+                    <h3>Sarah Chen</h3>
+                    <div class="role">Head of Security Consulting</div>
+                    <p>Certified ethical hacker and security consultant with expertise in penetration testing, vulnerability assessments, and incident response across various industries.</p>
+                </div>
+                <div class="team-card">
+                    <div class="team-photo">👨‍🔬</div>
+                    <h3>Marcus Thompson</h3>
+                    <div class="role">GRC & Compliance Director</div>
+                    <p>Specialized in NIST CSF and ISO27001 implementations. Former auditor with deep knowledge of regulatory compliance and risk management frameworks.</p>
+                </div>
+                <div class="team-card">
+                    <div class="team-photo">👩‍🚀</div>
+                    <h3>Dr. Emily Watson</h3>
+                    <div class="role">AI & Automation Lead</div>
+                    <p>PhD in Machine Learning with focus on cybersecurity applications. Pioneer in AI-driven threat detection and automated security response systems.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="faq">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What makes ThreatIQ different from other cybersecurity firms?</span>
+                        <span class="faq-arrow">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>ThreatIQ specializes in bridging the gap between enterprise-level cybersecurity and SMB accessibility. We combine advanced threat intelligence with practical, cost-effective solutions tailored specifically for small and medium businesses. Our unique approach integrates AI automation with human expertise to deliver comprehensive protection without the enterprise price tag.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How quickly can you implement cybersecurity solutions?</span>
+                        <span class="faq-arrow">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Implementation timelines vary based on your current security posture and specific needs. Basic security assessments can be completed within 1-2 weeks, while comprehensive security program implementations typically take 30-90 days. We provide detailed project timelines during our initial consultation.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Do you work with businesses of all sizes?</span>
+                        <span class="faq-arrow">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>While we work with various business sizes, our specialty is small to medium businesses (10-500 employees). We understand the unique challenges SMBs face with limited budgets and resources, and we've designed our services specifically to address these constraints while providing enterprise-grade security.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What compliance frameworks do you support?</span>
+                        <span class="faq-arrow">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We specialize in NIST Cybersecurity Framework and ISO27001, but also support HIPAA, PCI-DSS, SOC 2, and industry-specific regulations. Our team stays current with evolving compliance requirements and can help you navigate multiple framework requirements simultaneously.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How does your cyber insurance consulting work?</span>
+                        <span class="faq-arrow">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We conduct comprehensive risk assessments to determine your optimal coverage needs, help you navigate policy options from multiple carriers, assist with applications and underwriting, and provide ongoing support for claims if needed. We work as your advocate throughout the entire insurance lifecycle.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What is included in your AI automation consulting?</span>
+                        <span class="faq-arrow">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our AI automation services include threat detection automation, incident response orchestration, compliance reporting automation, and predictive risk analytics. We help you implement AI tools that reduce manual security tasks while improving detection accuracy and response times.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-content">
+                <h2 class="section-title">About ThreatIQ</h2>
+                <p>At ThreatIQ, we believe that advanced cybersecurity shouldn't be a luxury reserved for large enterprises. Founded by industry veterans with decades of combined experience, we've made it our mission to democratize cybersecurity intelligence and make sophisticated threat protection accessible to businesses of all sizes.</p>
+                <p>Our approach combines cutting-edge AI technology with deep human expertise to deliver comprehensive security solutions that scale with your business. We don't just implement tools – we build security cultures and empower teams with the knowledge and systems they need to stay protected in an evolving threat landscape.</p>
+                <p>From our headquarters in Austin, we serve clients nationwide, providing the strategic insight and tactical execution that modern businesses need to thrive securely in the digital age.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <form class="contact-form" id="contactForm">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="company">Company</label>
+                    <input type="text" id="company" name="company" placeholder="Your Company">
+                </div>
+                <div class="form-group">
+                    <label for="employees">Company Size</label>
+                    <input type="text" id="employees" name="employees" placeholder="Number of employees">
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="5" placeholder="Tell us about your cybersecurity needs and challenges..." required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 ThreatIQ. All rights reserved. | Intelligence-driven cybersecurity for the modern business</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Service card interactions
+        document.querySelectorAll('.service-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const details = this.querySelector('.service-details');
+                const isActive = this.classList.contains('active');
+                
+                // Close all other service cards
+                document.querySelectorAll('.service-card').forEach(otherCard => {
+                    otherCard.classList.remove('active');
+                    otherCard.querySelector('.service-details').classList.remove('active');
+                });
+                
+                // Toggle current card
+                if (!isActive) {
+                    this.classList.add('active');
+                    details.classList.add('active');
+                }
+            });
+        });
+
+        // FAQ interactions
+        document.querySelectorAll('.faq-item').forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', function() {
+                const answer = item.querySelector('.faq-answer');
+                const isActive = item.classList.contains('active');
+                
+                // Close all other FAQ items
+                document.querySelectorAll('.faq-item').forEach(otherItem => {
+                    otherItem.classList.remove('active');
+                    otherItem.querySelector('.faq-answer').classList.remove('active');
+                });
+                
+                // Toggle current item
+                if (!isActive) {
+                    item.classList.add('active');
+                    answer.classList.add('active');
+                }
+            });
+        });
+
+        // Intersection Observer for section animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe sections for animation
+        document.querySelectorAll('.services, .team, .faq, .about, .contact').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Contact form handling
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Simulate form submission
+            const submitBtn = this.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                alert('Thank you for your message! Our team will get back to you within 24 hours with a customized cybersecurity assessment.');
+                this.reset();
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }, 2000);
+        });
+
+        // Add scroll effect to navigation
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.style.background = 'rgba(0, 0, 0, 0.95)';
+                nav.style.backdropFilter = 'blur(20px)';
+            } else {
+                nav.style.background = 'rgba(10, 10, 10, 0.9)';
+                nav.style.backdropFilter = 'blur(15px)';
+            }
+        });
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            hero.style.transform = `translateY(${scrolled * 0.3}px)`;
+        });
+
+        // Add typing effect to hero title
+        function typeWriter(element, text, speed = 100) {
+            let i = 0;
+            element.innerHTML = '';
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+
+        // Initialize typing effect when page loads
+        window.addEventListener('load', () => {
+            const heroTitle = document.querySelector('.hero h1');
+            const originalText = heroTitle.textContent;
+            typeWriter(heroTitle, originalText, 150);
+        });
+
+        // Add random matrix rain effect to hero background
+        function createMatrixRain() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.style.position = 'absolute';
+            canvas.style.top = '0';
+            canvas.style.left = '0';
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+            canvas.style.opacity = '0.1';
+            canvas.style.pointerEvents = 'none';
+            canvas.style.zIndex = '0';
+            
+            const hero = document.querySelector('.hero');
+            hero.appendChild(canvas);
+            
+            canvas.width = hero.offsetWidth;
+            canvas.height = hero.offsetHeight;
+            
+            const matrix = "01";
+            const font_size = 10;
+            const columns = canvas.width / font_size;
+            const drops = [];
+            
+            for (let x = 0; x < columns; x++) {
+                drops[x] = 1;
+            }
+            
+            function draw() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = '#00ff88';
+                ctx.font = font_size + 'px monospace';
+                
+                for (let i = 0; i < drops.length; i++) {
+                    const text = matrix[Math.floor(Math.random() * matrix.length)];
+                    ctx.fillText(text, i * font_size, drops[i] * font_size);
+                    
+                    if (drops[i] * font_size > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+            
+            setInterval(draw, 35);
+        }
+        
+        // Initialize matrix rain effect
+        setTimeout(createMatrixRain, 1000);
+    </script>
+</body>
+</html>
